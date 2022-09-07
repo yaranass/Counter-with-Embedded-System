@@ -1,0 +1,83 @@
+
+// AT89S52 microcontroller with 22.1184MHz crystal
+
+#include <REG51.H>                /* special function register declarations   */
+#include <stdio.h>                /* prototype declarations for I/O functions */
+
+void Setup_S52();
+
+char segm[10]={0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90}; //look up table for digits from 0 to 9
+char segdec[10]= {0x90,0x80,0xF8,0x82,0x92,,0x99,0xB0,0xA4,0xF9,0xC0};
+unsigned int i;
+unsigned int x;
+
+unsigned char ch;
+unsigned char D;
+unsigned char U;
+unsigned char R;
+P2=0x00 ;
+
+void Seven_Segment();
+
+void main (void)
+  {
+   Setup_S52();
+		printf ("Press R reset /n Press U to count up /n press D to count down");   //Print a message to the terminal screen
+		//serial communication
+		while(1)
+		{
+		ch = getkey();		  // Get a character from the keyboard
+		if(ch=D)
+			{
+			Count_down();
+			}
+			else if (ch=U)
+				{
+				 Count_Up();
+				 }
+				 else 
+					 {
+					 Reset();
+					 }		
+}
+
+void Setup_S52() 
+{
+    SCON  = 0x50;		        /* SCON: mode 1, 8-bit UART, enable rcvr      */
+    TMOD |= 0x20;               /* TMOD: timer 1, mode 2, 8-bit reload        */
+    TH1   = 250;                /* TH1:  reload value for 9600 baud @ 22.1184MHz   */
+    TR1   = 1;                  /* TR1:  timer 1 run                          */
+    TI    = 1;                  /* TI:   set TI to send first char of UART    */
+}
+
+
+void  Count_Up()
+{
+while(1)
+{
+     for(x=0;x<10;x++)
+	 P2=segm[x] ;
+	void Delay();
+}
+
+
+void  Count_down()
+{
+  for(x=0;x<10;x++)
+  P2=segdec[x];
+  void Delay();
+}
+
+
+void  Reset()
+{
+
+P2=segm[0];
+      
+}
+void Delay()
+{
+	
+      for(i=0;i<80000;i++)   // Delay 2 Sec 
+	
+}
